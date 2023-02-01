@@ -9,7 +9,6 @@ async function findByEmail (email:string) {
     })
 }
 async function createUser(data:CreateUser) {
-    console.log(data)
     return prisma.user.create({
         data,
     });
