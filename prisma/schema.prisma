@@ -30,7 +30,7 @@ model Exercise {
   id        Int         @id @default(autoincrement())
   name      String      @db.VarChar(50)
   workoutId Int
-  sets      Int
+  sets      String
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   Execution Execution[]
@@ -64,6 +64,7 @@ model Workout {
   userId    Int
   name      String     @db.VarChar(50)
   createdAt DateTime   @default(now())
+  isActive  Boolean    @default(true) 
   updatedAt DateTime   @updatedAt
   Exercise  Exercise[]
   User      User       @relation(fields: [userId], references: [id])
