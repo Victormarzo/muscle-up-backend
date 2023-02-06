@@ -3,12 +3,13 @@ import httpStatus from "http-status";
 import { AuthenticatedRequest } from "@/middlewares";
 import workoutService from "@/services/workout-service";
 
+
 export async function createWorkout(req:AuthenticatedRequest,res:Response) {
     const { exercise, name } = req.body
     const { userId } = req;
     try {
         const workout = await workoutService.createWorkout({exercises:exercise,name,userId})
-        return res.status(httpStatus.CREATED).send(workout);
+        return res.sendStatus(httpStatus.CREATED);
     } catch (error) {
         return res.status(httpStatus.BAD_REQUEST).send(error)
     }
@@ -27,6 +28,7 @@ export async function getAllWorkouts(req:AuthenticatedRequest,res:Response) {
 
 export async function getActiveWorkouts(req:AuthenticatedRequest,res:Response) {
     const { userId } = req;
+    console.log(userId)
     try {
         const workouts = await workoutService.getActiveWorkouts(userId)
         return res.status(httpStatus.OK).send(workouts)
@@ -48,6 +50,40 @@ export async function toggleWorkout(req:AuthenticatedRequest,res:Response) {
           }
         return res.status(httpStatus.BAD_REQUEST).send(error)
     }
+}
 
+export async function getWorkout(req:AuthenticatedRequest,res:Response){
+    const workoutId = Number(req.params.workoutId);
+    try {
+        const workout= await workoutService.getWorkoutById(workoutId)
+        return res.send(workout.length)
+    } catch (error) {
+        if (error.name === "NotFoundError") {
+            return res.sendStatus(httpStatus.NOT_FOUND);
+          }
+        return res.status(httpStatus.BAD_REQUEST).send(error)
+    }
+}
 
+export async function updateLastWorkout(req:AuthenticatedRequest,res:Response){
+    const id = Number(req.params.id);
+    if (!id){
+        return res.sendStatus(httpStatus.BAD_REQUEST)
+    }
+    try {
+        await workoutService.updateLastWorkout(id)
+        return res.sendStatus(httpStatus.OK)
+    } catch (error) {
+        return res.status(httpStatus.BAD_REQUEST).send(error)
+    }
+}
+
+export async function getLastWorkout (req:AuthenticatedRequest,res:Response) {
+    try {
+        const lastWorkout = await workoutService.getLastWorkout()
+        return res.send(lastWorkout).status(httpStatus.OK)
+    } catch (error) {
+        return res.status(httpStatus.PAYMENT_REQUIRED).send(error)
+
+    }
 }

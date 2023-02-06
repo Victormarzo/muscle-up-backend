@@ -28,14 +28,32 @@ export async function getActiveWorkouts(userId:number) {
 export async function toggleWorkout({userId,workoutId}:toogleInput){
     const workout = await workoutRepository.findWorkoutById(workoutId)
     if(!workout) throw notFoundError();
+    //to do conferir userId
     const newActive=!workout.isActive
-    return workoutRepository.toggleWorkout({workoutId,newActive})
+    return await workoutRepository.toggleWorkout({workoutId,newActive})
 
 }
+
+export async function getWorkoutById(id:number){
+    const workout = await workoutRepository.getWorkoutById(id)
+    if(!workout) throw notFoundError();
+    return workout;
+}
+export async function updateLastWorkout(id:number) {
+    await workoutRepository.updateLastWorkout(id)
+}
+export async function getLastWorkout() {
+    const lastWorkout = await workoutRepository.getLastWorkout();
+    return lastWorkout;
+}
+
 const workoutService ={
     createWorkout,
     getAllWorkouts,
     getActiveWorkouts,
-    toggleWorkout
+    toggleWorkout,
+    getWorkoutById,
+    updateLastWorkout,
+    getLastWorkout
 };
 export default workoutService;

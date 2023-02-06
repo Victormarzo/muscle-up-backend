@@ -63,6 +63,57 @@ async function toggleWorkout({workoutId,newActive}:toogleInputRepository){
         }
     })
 }
+
+async function findExerciseById(id:number) {
+    return await prisma.exercise.findFirst({
+        where:{
+            id
+        },
+        include:{
+            Workout:true
+        }
+    })
+}
+
+async function getWorkoutById(workoutId:number){
+    return await prisma.exercise.findMany({
+        where:{
+            workoutId
+        }       
+    })
+}
+
+async function updateLastWorkout(id:number) {
+    return prisma.$transaction(async (tx)=>{
+        await prisma.workout.updateMany({
+            where:{
+                lastWorkout:true
+            },
+            data:{
+                lastWorkout:false
+            }
+        })
+        await prisma.workout.update({
+            where:{
+                id
+            },
+            data:{
+                lastWorkout:true
+            }
+        })
+    })
+    
+}
+
+async function getLastWorkout(){
+    return await prisma.workout.findFirst({
+        where:{
+            lastWorkout:true
+        }
+    })
+}
+
+
 type toogleInputRepository={
     workoutId:number,
     newActive:boolean
@@ -72,7 +123,11 @@ const workoutRepository = {
     getAllWorkouts,
     getActiveWorkouts,
     findWorkoutById,
-    toggleWorkout
+    toggleWorkout,
+    findExerciseById,
+    getWorkoutById,
+    updateLastWorkout,
+    getLastWorkout
 }
 
 export default workoutRepository;
