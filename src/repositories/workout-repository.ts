@@ -40,7 +40,15 @@ async function getActiveWorkouts(userId:number){
             isActive:true
         },
         include:{
-            Exercise:true
+            Exercise:{
+                include:{
+                    Execution:{
+                        where:{
+                            lastExecution:true
+                        }
+                    }
+                }
+            }
         }
     })
 }
@@ -79,7 +87,20 @@ async function getWorkoutById(workoutId:number){
     return await prisma.exercise.findMany({
         where:{
             workoutId
-        }       
+        },
+        include:{
+            Execution:{
+                where:{
+                    lastExecution:true
+                },take:1
+            },
+            Workout:{
+                select:{
+                    name:true
+                }
+            }
+
+        }
     })
 }
 

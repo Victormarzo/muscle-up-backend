@@ -28,7 +28,6 @@ export async function getAllWorkouts(req:AuthenticatedRequest,res:Response) {
 
 export async function getActiveWorkouts(req:AuthenticatedRequest,res:Response) {
     const { userId } = req;
-    console.log(userId)
     try {
         const workouts = await workoutService.getActiveWorkouts(userId)
         return res.status(httpStatus.OK).send(workouts)
@@ -56,7 +55,7 @@ export async function getWorkout(req:AuthenticatedRequest,res:Response){
     const workoutId = Number(req.params.workoutId);
     try {
         const workout= await workoutService.getWorkoutById(workoutId)
-        return res.send(workout.length)
+        return res.send(workout)
     } catch (error) {
         if (error.name === "NotFoundError") {
             return res.sendStatus(httpStatus.NOT_FOUND);
