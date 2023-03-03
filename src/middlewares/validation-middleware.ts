@@ -19,7 +19,7 @@ function validate(schema: ObjectSchema, type: "body" | "params") {
     if (!error) {
       next();
     } else {
-      res.sendStatus(httpStatus.BAD_REQUEST);
+      res.sendStatus(httpStatus.NOT_IMPLEMENTED);
     }
   };
 }

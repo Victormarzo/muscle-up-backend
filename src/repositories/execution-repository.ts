@@ -23,7 +23,7 @@ import {CreateExecution} from "@/protocols"
  
 
 async function findLastExecution(exerciseId:number) {
-    return await prisma.exercise.findMany({
+    return await prisma.exercise.findFirst({
         where:{
             id:exerciseId,
             
