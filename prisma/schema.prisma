@@ -66,8 +66,18 @@ model Workout {
   name      String     @db.VarChar(50)
   createdAt DateTime   @default(now())
   isActive  Boolean    @default(true)
-  lastWorkout Boolean  @default(false) 
+  current   Boolean    @default(false)
   updatedAt DateTime   @updatedAt
   Exercise  Exercise[]
+  History   History[]
   User      User       @relation(fields: [userId], references: [id])
+}
+
+model History {
+  id        Int        @id @default(autoincrement())
+  workoutId Int
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Workout   Workout    @relation(fields: [workoutId], references: [id])
+  
 }

@@ -64,25 +64,39 @@ export async function getWorkout(req:AuthenticatedRequest,res:Response){
     }
 }
 
-export async function updateLastWorkout(req:AuthenticatedRequest,res:Response){
-    const id = Number(req.params.id);
-    if (!id){
-        return res.sendStatus(httpStatus.BAD_REQUEST)
-    }
+export async function getCurrentWorkout (req:AuthenticatedRequest,res:Response) {
+    const { userId } = req;
     try {
-        await workoutService.updateLastWorkout(id)
-        return res.sendStatus(httpStatus.OK)
+        const current = await workoutService.getCurrentWorkout(userId)
+        return res.send(current).status(httpStatus.OK)
     } catch (error) {
+        return res.status(httpStatus.PAYMENT_REQUIRED).send(error)
+
+    }
+}
+
+export async function finishWorkout(req:AuthenticatedRequest,res:Response) {
+    const  {userId} = req;
+    console.log('aloooo galera de peao')
+    try {
+        await workoutService.finishWorkout(userId)
+        return res.sendStatus(httpStatus.OK)      
+    } catch (error) {
+        if (error.name === "NotFoundError") {
+            return res.sendStatus(httpStatus.NOT_FOUND);
+          }
         return res.status(httpStatus.BAD_REQUEST).send(error)
     }
 }
 
-export async function getLastWorkout (req:AuthenticatedRequest,res:Response) {
+export async function checkWorkout(req:AuthenticatedRequest,res:Response) {
+    const  {userId} = req;
     try {
-        const lastWorkout = await workoutService.getLastWorkout()
-        return res.send(lastWorkout).status(httpStatus.OK)
-    } catch (error) {
-        return res.status(httpStatus.PAYMENT_REQUIRED).send(error)
+        const check = await workoutService.checkWorkout(userId);
+        return res.send(check).status(httpStatus.OK)
 
+    } catch (error) {
+        console.log(error)
+        return res.status(httpStatus.PAYMENT_REQUIRED).send(error)
     }
 }

@@ -5,8 +5,9 @@ import {
   getActiveWorkouts, 
   toggleWorkout, 
   getWorkout,
-  updateLastWorkout,
-  getLastWorkout
+  getCurrentWorkout,
+  finishWorkout,
+  checkWorkout
 } from "@/controllers"
 import { validateBody, authenticateToken} from "@/middlewares";
 import { createWorkoutSchema } from "@/schemas";
@@ -14,12 +15,13 @@ const workoutRouter = Router();
 
 workoutRouter
   .all("/*", authenticateToken)
-  .get("/last", getLastWorkout)
+  .get("/current", getCurrentWorkout)
+  .get("/check", checkWorkout )
+  .get("/finish-workout", finishWorkout)
   .post("/", validateBody(createWorkoutSchema), createWorkout)
   .get("/", getAllWorkouts)
   .get("/active", getActiveWorkouts)
   .put("/:workoutId", toggleWorkout)
-  .get("/:workoutId", getWorkout)
-  .put("/last/:id", updateLastWorkout)
- 
+  .get("/:workoutId", getWorkout);
+
 export { workoutRouter };

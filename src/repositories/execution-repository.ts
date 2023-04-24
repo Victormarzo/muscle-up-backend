@@ -18,6 +18,29 @@ import {CreateExecution} from "@/protocols"
         await tx.execution.createMany({
             data:params
         })
+        const exercise = await tx.exercise.findFirst({
+            where:{
+                id: exerciseId
+            }
+        })
+        const {workoutId} = exercise;
+        //todo update onde tira qualquer current que possa estar ativo
+        await tx.workout.updateMany({
+            where:{
+                current:true
+            },
+            data:{
+                current:false
+            }
+        })
+        await tx.workout.update({
+            where:{
+                id:workoutId
+            },
+            data:{
+                current:true
+            }
+        })
     })
 }
  
