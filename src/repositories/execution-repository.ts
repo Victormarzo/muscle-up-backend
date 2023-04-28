@@ -24,7 +24,7 @@ import {CreateExecution} from "@/protocols"
             }
         })
         const {workoutId} = exercise;
-        //todo update onde tira qualquer current que possa estar ativo
+        console.log('esse é o workout',workoutId)
         await tx.workout.updateMany({
             where:{
                 current:true
@@ -32,8 +32,8 @@ import {CreateExecution} from "@/protocols"
             data:{
                 current:false
             }
-        })
-        await tx.workout.update({
+        }) 
+        const abacaxi = await tx.workout.update({
             where:{
                 id:workoutId
             },
@@ -41,6 +41,7 @@ import {CreateExecution} from "@/protocols"
                 current:true
             }
         })
+        console.log('aqui mano abacaxi',abacaxi)
     })
 }
  

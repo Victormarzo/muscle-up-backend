@@ -17,7 +17,7 @@ workoutRouter
   .all("/*", authenticateToken)
   .get("/current", getCurrentWorkout)
   .get("/check", checkWorkout )
-  .get("/finish-workout", finishWorkout)
+  .put("/finish-workout", finishWorkout)
   .post("/", validateBody(createWorkoutSchema), createWorkout)
   .get("/", getAllWorkouts)
   .get("/active", getActiveWorkouts)

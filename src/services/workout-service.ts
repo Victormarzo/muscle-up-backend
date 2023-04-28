@@ -42,7 +42,6 @@ export async function getWorkoutById(id:number){
 
 export async function getCurrentWorkout(userId:number) {
     const current = await workoutRepository.getCurrentWorkout(userId);
-    console.log("AAAAA",current)
     return current;
 }
 
@@ -57,9 +56,7 @@ export async function finishWorkout(userId:number) {
 }
 
 export async function checkWorkout(userId:number) {
-    console.log('aaaaaaaa')
     const currentWorkout = await workoutRepository.getCurrentWorkout(userId)
-    console.log(currentWorkout)
     const now = dayjs().format('DD/MM/YYYY');
 
     if(!currentWorkout){
