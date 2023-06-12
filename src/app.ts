@@ -6,7 +6,6 @@ import { userRouter, authRouter, workoutRouter } from "@/routers";
 import { executionRouter } from "./routers/execution-router";
 import { handleApplicationErrors } from "@/middlewares";
 loadEnv();
-
 const app = express();
 app 
     .use(cors())
@@ -17,6 +16,7 @@ app
     .use("/workout", workoutRouter)
     .use("/execution", executionRouter)
     .use(handleApplicationErrors);
+
 export function init(): Promise<Express> {
     connectDb();
     return Promise.resolve(app);

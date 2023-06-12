@@ -6,6 +6,7 @@ import { signIn } from "@/controllers";
 
 const authRouter = Router();
 
+
 authRouter.post("/", validateBody(LogUserSchema),signIn);
 
 export { authRouter };

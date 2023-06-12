@@ -5,6 +5,7 @@ import workoutService from "@/services/workout-service";
 
 
 export async function createWorkout(req:AuthenticatedRequest,res:Response) {
+    console.log('1',req.body);
     const { exercise, name } = req.body
     const { userId } = req;
     try {
