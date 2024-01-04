@@ -3,9 +3,7 @@ import httpStatus from "http-status";
 import { AuthenticatedRequest } from "@/middlewares";
 import workoutService from "@/services/workout-service";
 
-
 export async function createWorkout(req:AuthenticatedRequest,res:Response) {
-    console.log('1',req.body);
     const { exercise, name } = req.body
     const { userId } = req;
     try {
@@ -66,7 +64,6 @@ export async function getWorkout(req:AuthenticatedRequest,res:Response){
 }
 
 export async function getCurrentWorkout (req:AuthenticatedRequest,res:Response) {
-    console.log('getCurrentWorkout');
     const { userId } = req;
     try {
         const current = await workoutService.getCurrentWorkout(userId)
@@ -79,7 +76,6 @@ export async function getCurrentWorkout (req:AuthenticatedRequest,res:Response) 
 
 export async function finishWorkout(req:AuthenticatedRequest,res:Response) {
     const  {userId} = req;
-    console.log('finishWorkout')
     try {
         await workoutService.finishWorkout(userId)
         return res.sendStatus(httpStatus.OK)      
@@ -92,14 +88,12 @@ export async function finishWorkout(req:AuthenticatedRequest,res:Response) {
 }
 
 export async function checkWorkout(req:AuthenticatedRequest,res:Response) {
-    console.log('checkWorkout')
     const  {userId} = req;
     try {
         const check = await workoutService.checkWorkout(userId);
         return res.send(check).status(httpStatus.OK)
 
     } catch (error) {
-        console.log(error)
         return res.status(httpStatus.PAYMENT_REQUIRED).send(error)
     }
 }

@@ -29,7 +29,7 @@ export async function getActiveWorkouts(userId:number) {
 export async function toggleWorkout({userId,workoutId}:toogleInput){
     const workout = await workoutRepository.findWorkoutById(workoutId)
     if(!workout) throw notFoundError();
-    //if(userId!==workout.userId) throw unauthorizedError();
+    if(userId!==workout.userId) throw unauthorizedError();
     const newActive=!workout.isActive
     return await workoutRepository.toggleWorkout({workoutId,newActive})
 }

@@ -27,6 +27,9 @@ async function getAllWorkouts(userId:number) {
         where:{
             userId
         },
+        orderBy:{
+          createdAt:'desc'  
+        },
         include:{
             Exercise:true
         }
@@ -137,6 +140,7 @@ async function check(id:number){
         where:{
             workoutId:id
         },
+   
         include:{
             Execution:{
                 where:{

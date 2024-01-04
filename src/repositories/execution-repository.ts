@@ -24,7 +24,6 @@ import {CreateExecution} from "@/protocols"
             }
         })
         const {workoutId} = exercise;
-        console.log('esse é o workout',workoutId)
         await tx.workout.updateMany({
             where:{
                 current:true
@@ -33,7 +32,7 @@ import {CreateExecution} from "@/protocols"
                 current:false
             }
         }) 
-        const abacaxi = await tx.workout.update({
+        await tx.workout.update({
             where:{
                 id:workoutId
             },
@@ -41,7 +40,7 @@ import {CreateExecution} from "@/protocols"
                 current:true
             }
         })
-        console.log('aqui mano abacaxi',abacaxi)
+        
     })
 }
  
