@@ -42,6 +42,7 @@ export async function getWorkoutById(id:number){
 
 export async function getCurrentWorkout(userId:number) {
     const current = await workoutRepository.getCurrentWorkout(userId);
+    if(!current) throw notFoundError();
     return current;
 }
 
@@ -60,7 +61,7 @@ export async function checkWorkout(userId:number) {
     const now = dayjs().format('DD/MM/YYYY');
 
     if(!currentWorkout){
-        throw notFoundError()
+        throw notFoundError();
     }
     const {id}=currentWorkout;
     const exerciseList = await workoutRepository.check(id);
@@ -76,6 +77,14 @@ export async function checkWorkout(userId:number) {
     
 }
 
+export async function getLastWorkout(userId:number){
+    const lastWorkout = await workoutRepository.getLastWorkout(userId);
+    if(!lastWorkout){
+        throw notFoundError();
+    }
+    return lastWorkout;
+}
+
 const workoutService ={
     createWorkout,
     getAllWorkouts,
@@ -84,6 +93,7 @@ const workoutService ={
     getWorkoutById,
     getCurrentWorkout,
     finishWorkout,
-    checkWorkout
+    checkWorkout,
+    getLastWorkout
 };
 export default workoutService;

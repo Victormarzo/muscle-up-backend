@@ -9,13 +9,14 @@ export async function signIn({email,password}:LogUser){
     const user = await userRepository.findByEmail(email);
     if(!user) throw loginError();   
     const userId=user.id
+    const name=user.name
     const correctPassword = await bcrypt.compare(password,user.password);
     if(!correctPassword) throw loginError();
     
     const token = jwt.sign({ userId }, process.env.JWT_SECRET);
     await authRepository.createSession({token,userId})
 
-    return {userId,token}
+    return {userId,token,name}
 }
 
 const authService = {

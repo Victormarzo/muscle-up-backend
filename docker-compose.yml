@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:13
+    container_name: db
+    ports:
+      - 2345:5432
+    networks:
+      - compose-bridge
+    env_file:
+      - .env
+    restart: always
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  app:
+    container_name: app
+    build: .
+    networks:
+      - compose-bridge    
+    ports:
+      - 5000:4002
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+  
+  node-app:
+    container_name: node-app
+    build: ../muscle-up-frontend
+    env_file: ../muscle-up-frontend/.env
+    networks:
+      - compose-bridge    
+    ports:
+      - 5005:4000
+    depends_on:
+      - app
+    
+networks:
+  compose-bridge:
+    driver: bridge
+volumes:
+  postgres:
