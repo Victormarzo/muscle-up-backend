@@ -24,6 +24,6 @@ workoutRouter
   .get("/", getAllWorkouts)
   .get("/active", getActiveWorkouts)
   .get("/:workoutId", getWorkout)
-
+  
 export { workoutRouter };
     

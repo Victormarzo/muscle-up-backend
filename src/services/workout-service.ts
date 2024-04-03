@@ -42,7 +42,6 @@ export async function getWorkoutById(id:number){
 
 export async function getCurrentWorkout(userId:number) {
     const current = await workoutRepository.getCurrentWorkout(userId);
-    if(!current) throw notFoundError();
     return current;
 }
 
@@ -59,20 +58,20 @@ export async function finishWorkout(userId:number) {
 export async function checkWorkout(userId:number) {
     const currentWorkout = await workoutRepository.getCurrentWorkout(userId)
     const now = dayjs().format('DD/MM/YYYY');
-
+    let final = true;
     if(!currentWorkout){
-        throw notFoundError();
+        return final=false;
     }
     const {id}=currentWorkout;
     const exerciseList = await workoutRepository.check(id);
    
-    let final = true;
+    
     for(let i=0; i<exerciseList.length;i++){
         if(dayjs(exerciseList[i].Execution[0].createdAt).format('DD/MM/YYYY')!==now){
             final = false;
         }
     }
-    
+    console.log(final)
     return final;
     
 }
@@ -94,6 +93,6 @@ const workoutService ={
     getCurrentWorkout,
     finishWorkout,
     checkWorkout,
-    getLastWorkout
+    getLastWorkout,
 };
 export default workoutService;

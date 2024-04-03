@@ -182,7 +182,8 @@ const workoutRepository = {
     getCurrentWorkout,
     finishWorkout,
     check,
-    getLastWorkout
+    getLastWorkout,
+
 
 }
 
