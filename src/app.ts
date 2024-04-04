@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import cors from "cors";
 import { loadEnv } from "./config/envs";
 import { connectDb, disconnectDb } from "./config/database";
-import { userRouter, authRouter, workoutRouter } from "@/routers";
+import { userRouter, authRouter, workoutRouter, historyRouter } from "@/routers";
 import { executionRouter } from "./routers/execution-router";
 import { handleApplicationErrors } from "@/middlewares";
 loadEnv();
@@ -15,6 +15,7 @@ app
     .use("/auth", authRouter)
     .use("/workout", workoutRouter)
     .use("/execution", executionRouter)
+    .use("/history", historyRouter)
     .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {

@@ -12,8 +12,8 @@ export async function signIn({email,password}:LogUser){
     const name=user.name
     const correctPassword = await bcrypt.compare(password,user.password);
     if(!correctPassword) throw loginError();
-    
     const token = jwt.sign({ userId }, process.env.JWT_SECRET);
+    await authRepository.deleteSession(userId)
     await authRepository.createSession({token,userId})
 
     return {userId,token,name}

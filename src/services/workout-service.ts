@@ -1,5 +1,6 @@
 import { notFoundError, unauthorizedError } from "@/errors";
 import { CreateExercise } from "@/protocols";
+import executionRepository from "@/repositories/execution-repository";
 import workoutRepository from "@/repositories/workout-repository";
 import dayjs from "dayjs";
 
@@ -71,17 +72,8 @@ export async function checkWorkout(userId:number) {
             final = false;
         }
     }
-    console.log(final)
     return final;
     
-}
-
-export async function getLastWorkout(userId:number){
-    const lastWorkout = await workoutRepository.getLastWorkout(userId);
-    if(!lastWorkout){
-        throw notFoundError();
-    }
-    return lastWorkout;
 }
 
 const workoutService ={
@@ -92,7 +84,6 @@ const workoutService ={
     getWorkoutById,
     getCurrentWorkout,
     finishWorkout,
-    checkWorkout,
-    getLastWorkout,
+    checkWorkout
 };
 export default workoutService;

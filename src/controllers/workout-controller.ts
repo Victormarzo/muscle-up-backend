@@ -99,14 +99,3 @@ export async function checkWorkout(req:AuthenticatedRequest,res:Response) {
         return res.status(httpStatus.PAYMENT_REQUIRED).send(error)
     }
 }
-
-export  async function getLastWorkout(req:AuthenticatedRequest, res:Response) {
-    const {userId} =req;
-    try {
-        const last = await workoutService.getLastWorkout(userId);
-        return res.send(last).status(httpStatus.OK)
-
-    } catch (error) {
-        return res.status(httpStatus.NOT_FOUND).send(error)
-    }
-}

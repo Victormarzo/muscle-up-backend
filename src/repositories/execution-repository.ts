@@ -60,8 +60,23 @@ async function findLastExecution(exerciseId:number) {
         }
     })
 }
+
+async function checkAnyExecution(id:number) {
+    return await prisma.workout.findFirst({
+           include:{
+            Exercise:{
+                include:{
+                    Execution:true
+                }
+            }
+           },
+           where:{userId:id}
+        })
+}
+
 const executionRepository = {
     createExecution,
-    findLastExecution
+    findLastExecution,
+    checkAnyExecution
 }
 export default executionRepository;

@@ -155,18 +155,6 @@ async function check(id:number){
     })
 }
 
-async function  getLastWorkout(id:number) {
-    return await prisma.workout.findFirst({
-        where:{
-            userId:id
-        },
-        orderBy:{
-            updatedAt:'desc'
-        }
-        
-    })
-}
-
 type toogleInputRepository={
     workoutId:number,
     newActive:boolean
@@ -181,10 +169,7 @@ const workoutRepository = {
     getWorkoutById,
     getCurrentWorkout,
     finishWorkout,
-    check,
-    getLastWorkout,
-
-
+    check
 }
 
 export default workoutRepository;

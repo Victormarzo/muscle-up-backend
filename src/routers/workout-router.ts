@@ -7,15 +7,13 @@ import {
   getWorkout,
   getCurrentWorkout,
   finishWorkout,
-  checkWorkout,
-  getLastWorkout
+  checkWorkout
 } from "@/controllers"
 import { validateBody, authenticateToken} from "@/middlewares";
 import { createWorkoutSchema } from "@/schemas";
 const workoutRouter = Router();
 workoutRouter
   .all("/*", authenticateToken)
-  .get("/last", getLastWorkout)
   .get("/current", getCurrentWorkout)
   .get("/check", checkWorkout )
   .get("/toggle/:workoutId", toggleWorkout)
