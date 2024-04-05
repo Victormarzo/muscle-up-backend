@@ -1,6 +1,5 @@
 import { notFoundError, unauthorizedError } from "@/errors";
 import { CreateExercise } from "@/protocols";
-import executionRepository from "@/repositories/execution-repository";
 import workoutRepository from "@/repositories/workout-repository";
 import dayjs from "dayjs";
 
@@ -60,22 +59,21 @@ export async function checkWorkout(userId:number) {
     const currentWorkout = await workoutRepository.getCurrentWorkout(userId)
     const now = dayjs().format('DD/MM/YYYY');
     let final = true;
+    
     if(!currentWorkout){
         return final=false;
     }
     const {id}=currentWorkout;
     const exerciseList = await workoutRepository.check(id);
-   
-    
     for(let i=0; i<exerciseList.length;i++){
-        if(dayjs(exerciseList[i].Execution[0].createdAt).format('DD/MM/YYYY')!==now){
+        if(exerciseList[i].Execution[0]==null || dayjs(exerciseList[i].Execution[0].createdAt).format('DD/MM/YYYY')!==now){
             final = false;
         }
     }
     return final;
     
 }
-
+// 
 const workoutService ={
     createWorkout,
     getAllWorkouts,

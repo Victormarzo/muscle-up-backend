@@ -96,6 +96,6 @@ export async function checkWorkout(req:AuthenticatedRequest,res:Response) {
         return res.send(check).status(httpStatus.OK)
 
     } catch (error) {
-        return res.status(httpStatus.PAYMENT_REQUIRED).send(error)
+        return res.status(httpStatus.BAD_REQUEST).send(error)
     }
 }
