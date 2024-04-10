@@ -67,6 +67,7 @@ export async function getCurrentWorkout (req:AuthenticatedRequest,res:Response) 
     const { userId } = req;
         try {
         const current = await workoutService.getCurrentWorkout(userId)
+        console.log(current)
         return res.send(current).status(httpStatus.OK)
     } catch (error) {
         if (error.name === "NotFoundError") {

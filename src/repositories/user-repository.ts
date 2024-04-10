@@ -13,6 +13,7 @@ async function createUser(data:CreateUser) {
         data,
     });
 }
+
 const userRepository = {
     findByEmail,
     createUser

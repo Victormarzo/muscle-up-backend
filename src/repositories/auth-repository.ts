@@ -14,6 +14,7 @@ async function deleteSession(userId:number){
     }
   })
 }
+
 const authRepository = {
     createSession,
     deleteSession

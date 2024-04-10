@@ -19,7 +19,12 @@ export async function signIn({email,password}:LogUser){
     return {userId,token,name}
 }
 
+export async function logUserOut(userId:number){
+    return await authRepository.deleteSession(userId)
+}
+
 const authService = {
-    signIn
+    signIn,
+    logUserOut
 }
 export default authService

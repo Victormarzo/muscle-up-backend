@@ -8,8 +8,8 @@ export async function getHistoryByUserId (userId:number){
 }
 
 export async function getLastWorkoutFromHistory (userId:number){
-    const workout = historyRepository.getLastWorkout(userId)
-    if(!workout) throw notFoundError()
+    const workout = await historyRepository.getLastWorkout(userId)
+    if(!workout) return false
     return workout
 }
 

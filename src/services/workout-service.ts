@@ -3,78 +3,83 @@ import { CreateExercise } from "@/protocols";
 import workoutRepository from "@/repositories/workout-repository";
 import dayjs from "dayjs";
 
-export async function createWorkout({exercises,name,userId}:createWorkoutInput) {
-    const workout = await workoutRepository.createWorkout({userId,name,exercises});
+export async function createWorkout({ exercises, name, userId }: createWorkoutInput) {
+    const workout = await workoutRepository.createWorkout({ userId, name, exercises });
     return workout;
 }
 
 export type createWorkoutInput = {
-    exercises:CreateExercise[],
-    name:string,
-    userId:number
+    exercises: CreateExercise[],
+    name: string,
+    userId: number
 }
-export type toogleInput ={
-    userId:number,
-    workoutId:number
+export type toogleInput = {
+    userId: number,
+    workoutId: number
 }
-export async function getAllWorkouts(userId:number){
+export async function getAllWorkouts(userId: number) {
     const workouts = await workoutRepository.getAllWorkouts(userId);
     return workouts;
 }
 
-export async function getActiveWorkouts(userId:number) {
+export async function getActiveWorkouts(userId: number) {
     const workouts = await workoutRepository.getActiveWorkouts(userId);
     return workouts;
 }
-export async function toggleWorkout({userId,workoutId}:toogleInput){
+export async function toggleWorkout({ userId, workoutId }: toogleInput) {
     const workout = await workoutRepository.findWorkoutById(workoutId)
-    if(!workout) throw notFoundError();
-    if(userId!==workout.userId) throw unauthorizedError();
-    const newActive=!workout.isActive
-    return await workoutRepository.toggleWorkout({workoutId,newActive})
+    if (!workout) throw notFoundError();
+    if (userId !== workout.userId) throw unauthorizedError();
+    const newActive = !workout.isActive
+    return await workoutRepository.toggleWorkout({ workoutId, newActive })
 }
 
-export async function getWorkoutById(id:number){
+export async function getWorkoutById(id: number) {
     const workout = await workoutRepository.getWorkoutById(id)
-    if(!workout) throw notFoundError();
+    if (!workout) throw notFoundError();
     return workout;
 }
 
-export async function getCurrentWorkout(userId:number) {
+export async function getCurrentWorkout(userId: number) {
     const current = await workoutRepository.getCurrentWorkout(userId);
-    return current;
+    if (current) {
+        return current;
+    }
+    else {
+        return false;
+    }
 }
 
-export async function finishWorkout(userId:number) {
+export async function finishWorkout(userId: number) {
     const workout = await workoutRepository.getCurrentWorkout(userId);
-    if (workout.id){
+    if (workout.id) {
         const finish = await workoutRepository.finishWorkout(workout.id);
         return finish;
-    }else{
+    } else {
         throw notFoundError();
-    }    
+    }
 }
 
-export async function checkWorkout(userId:number) {
+export async function checkWorkout(userId: number) {
     const currentWorkout = await workoutRepository.getCurrentWorkout(userId)
     const now = dayjs().format('DD/MM/YYYY');
     let final = true;
-    
-    if(!currentWorkout){
-        return final=false;
+
+    if (!currentWorkout) {
+        return final = false;
     }
-    const {id}=currentWorkout;
+    const { id } = currentWorkout;
     const exerciseList = await workoutRepository.check(id);
-    for(let i=0; i<exerciseList.length;i++){
-        if(exerciseList[i].Execution[0]==null || dayjs(exerciseList[i].Execution[0].createdAt).format('DD/MM/YYYY')!==now){
+    for (let i = 0; i < exerciseList.length; i++) {
+        if (exerciseList[i].Execution[0] == null || dayjs(exerciseList[i].Execution[0].createdAt).format('DD/MM/YYYY') !== now) {
             final = false;
         }
     }
     return final;
-    
+
 }
 // 
-const workoutService ={
+const workoutService = {
     createWorkout,
     getAllWorkouts,
     getActiveWorkouts,
