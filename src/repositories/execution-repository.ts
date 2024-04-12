@@ -1,6 +1,6 @@
+import dayjs from "dayjs"
 import { prisma } from "../config"
 import {CreateExecution} from "@/protocols"
-
 
  async function createExecution(params:CreateExecution[]) {
     const {exerciseId}=params[0]
@@ -12,9 +12,15 @@ import {CreateExecution} from "@/protocols"
                 lastExecution:true
             },
             data:{
-                lastExecution:false
+                lastExecution:false,
+                updatedAt:dayjs().format('YYYY-MM-DD')
             }
         })
+
+        params.forEach(ex=>{
+            ex.updatedAt=dayjs().format('YYYY-MM-DD')
+        })
+
         await tx.execution.createMany({
             data:params
         })
@@ -29,7 +35,8 @@ import {CreateExecution} from "@/protocols"
                 current:true
             },
             data:{
-                current:false
+                current:false,
+                updatedAt:dayjs().format('YYYY-MM-DD')
             }
         }) 
         await tx.workout.update({
@@ -37,7 +44,8 @@ import {CreateExecution} from "@/protocols"
                 id:workoutId
             },
             data:{
-                current:true
+                current:true,
+                updatedAt:dayjs().format('YYYY-MM-DD')
             }
         })
         

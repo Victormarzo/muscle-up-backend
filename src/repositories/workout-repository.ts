@@ -1,5 +1,5 @@
+import dayjs from "dayjs";
 import { prisma } from "../config"
-import {CreateExercise, NewWorkout} from "@/protocols"
 import { createWorkoutInput } from "@/services/workout-service";
 
 async function createWorkout(params: createWorkoutInput) {
@@ -9,14 +9,17 @@ async function createWorkout(params: createWorkoutInput) {
         const workout = await tx.workout.create({
             data:{
                 userId,
-                name
+                name,
+                updatedAt:dayjs().format('YYYY-MM-DD')
             }
         })
         exercises.forEach(ex=>{
-            ex.workoutId=workout.id
+            ex.workoutId=workout.id,
+            ex.updatedAt=dayjs().format('YYYY-MM-DD')
         })
         await tx.exercise.createMany({
-            data:exercises       
+            data:exercises,
+                   
         })
         
     })
@@ -70,7 +73,8 @@ async function toggleWorkout({workoutId,newActive}:toogleInputRepository){
             id:workoutId,
         },
         data:{
-            isActive:newActive
+            isActive:newActive,
+            updatedAt:dayjs().format('YYYY-MM-DD')
         }
     })
 }
@@ -127,12 +131,15 @@ async function  finishWorkout(id:number) {
                 id,
             },
             data:{
-                current:false
+                current:false,
+                updatedAt:dayjs().format('YYYY-MM-DD')
             }
         })
+        
         await tx.history.create({
             data:{
-                workoutId:id
+                workoutId:id,
+                updatedAt:dayjs().format('YYYY-MM-DD')
             }
         })
     })

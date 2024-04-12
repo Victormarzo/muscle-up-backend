@@ -1,5 +1,6 @@
 import { notFoundError, unauthorizedError } from "@/errors";
 import { CreateExercise } from "@/protocols";
+import historyRepository from "@/repositories/history-repository";
 import workoutRepository from "@/repositories/workout-repository";
 import dayjs from "dayjs";
 
@@ -37,7 +38,9 @@ export async function toggleWorkout({ userId, workoutId }: toogleInput) {
 export async function getWorkoutById(id: number) {
     const workout = await workoutRepository.getWorkoutById(id)
     if (!workout) throw notFoundError();
-    return workout;
+    const count = await historyRepository.countWorkout(id)
+    const response = {count,workout}
+    return response;
 }
 
 export async function getCurrentWorkout(userId: number) {
@@ -62,16 +65,17 @@ export async function finishWorkout(userId: number) {
 
 export async function checkWorkout(userId: number) {
     const currentWorkout = await workoutRepository.getCurrentWorkout(userId)
-    const now = dayjs().format('DD/MM/YYYY');
+    const now = dayjs().format('YYYY-MM-DD');
+    console.log(now)
     let final = true;
-
     if (!currentWorkout) {
         return final = false;
     }
+    console.log(final)
     const { id } = currentWorkout;
     const exerciseList = await workoutRepository.check(id);
     for (let i = 0; i < exerciseList.length; i++) {
-        if (exerciseList[i].Execution[0] == null || dayjs(exerciseList[i].Execution[0].createdAt).format('DD/MM/YYYY') !== now) {
+        if (exerciseList[i].Execution[0] == null || dayjs(exerciseList[i].Execution[0].updatedAt).format('YYYY-MM-DD') !== now) {
             final = false;
         }
     }

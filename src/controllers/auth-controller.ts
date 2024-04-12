@@ -9,7 +9,7 @@ export async function signIn(req:Request,res:Response) {
         const session = await authService.signIn({email,password})    
         return res.status(httpStatus.OK).send(session);   
     } catch (error) {
-        return res.status(httpStatus.UNAUTHORIZED).send(error);
+        return res.status(httpStatus.PAYMENT_REQUIRED).send(error);
     }
 }
 

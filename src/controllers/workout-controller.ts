@@ -7,7 +7,7 @@ export async function createWorkout(req:AuthenticatedRequest,res:Response) {
     const { exercise, name } = req.body
     const { userId } = req;
     try {
-        const workout = await workoutService.createWorkout({exercises:exercise,name,userId})
+        await workoutService.createWorkout({exercises:exercise,name,userId})
         return res.sendStatus(httpStatus.CREATED);
     } catch (error) {
         return res.status(httpStatus.BAD_REQUEST).send(error)
@@ -67,7 +67,6 @@ export async function getCurrentWorkout (req:AuthenticatedRequest,res:Response) 
     const { userId } = req;
         try {
         const current = await workoutService.getCurrentWorkout(userId)
-        console.log(current)
         return res.send(current).status(httpStatus.OK)
     } catch (error) {
         if (error.name === "NotFoundError") {

@@ -1,13 +1,13 @@
 import { conflictError } from "@/errors";
-import { CreateUser } from "@/protocols";
+import { CreateUserUpdate } from "@/protocols";
 import userRepository from "@/repositories/user-repository";
-import { User } from "@prisma/client";
 import bcrypt from "bcrypt"
+import dayjs from "dayjs";
 
-export async function createUser({email,password,name}:CreateUser) {
+export async function createUser({email,password,name}:CreateUserUpdate) {
     await verifyEmail(email);
     const hashedPassword = await bcrypt.hash(password,10);
-    return userRepository.createUser({email,password:hashedPassword,name})
+    return userRepository.createUser({email,password:hashedPassword,name,updatedAt:dayjs().format('YYYY-MM-DD')})
 
 }
 

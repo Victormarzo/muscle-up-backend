@@ -8,6 +8,7 @@ export async function createExecution({executions,userId}:executionInput){
     const exercise = await workoutRepository.findExerciseById(exerciseId);
     if (!exercise) throw notFoundError();
     if (exercise.Workout.userId !== userId) throw unauthorizedError();
+    
     return await executionRepository.createExecution(executions)
 }
 

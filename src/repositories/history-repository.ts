@@ -28,8 +28,18 @@ async function getLastWorkout(userId:number){
 
     })
 }
+
+async function countWorkout(workoutId:number) {
+    return await prisma.history.count({
+        where:{
+            workoutId
+        }
+    })
+}
+
 const historyRepository ={
     getHistoryByUserId,
-    getLastWorkout
+    getLastWorkout,
+    countWorkout
 }
 export default historyRepository

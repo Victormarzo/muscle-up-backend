@@ -1,10 +1,10 @@
-import { Exercise, User, Stats, Execution, Workout } from "@prisma/client";
+import { Exercise, User, Execution, Workout } from "@prisma/client";
 
-export type CreateUser = Omit <User, "createdAt" | "updatedAt" | "id" >;
+export type CreateUser = Omit <User, "createdAt" | "id" >;
+export type CreateUserUpdate = Omit <User, "createdAt" | "updatedAt" | "id">;
 export type LogUser = Omit<User, "createdAt" | "updatedAt" | "id" | "name">
-export type CreateStats = Omit <Stats, "createdAt" | "updatedAt" | "id">;
-export type CreateExercise = Omit <Exercise, "createdAt" | "updatedAt" | "id">;
-export type CreateExecution = Omit <Execution, "createdAt" | "updatedAt" | "id"|"lastExecution">;
+export type CreateExercise = Omit <Exercise, "createdAt" | "id">;
+export type CreateExecution = Omit <Execution, "createdAt" | "id"|"lastExecution">;
 export type ApplicationError = {
     name: string;
     message: string;
