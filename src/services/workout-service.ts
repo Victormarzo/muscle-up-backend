@@ -66,12 +66,10 @@ export async function finishWorkout(userId: number) {
 export async function checkWorkout(userId: number) {
     const currentWorkout = await workoutRepository.getCurrentWorkout(userId)
     const now = dayjs().format('YYYY-MM-DD');
-    console.log(now)
     let final = true;
     if (!currentWorkout) {
         return final = false;
     }
-    console.log(final)
     const { id } = currentWorkout;
     const exerciseList = await workoutRepository.check(id);
     for (let i = 0; i < exerciseList.length; i++) {

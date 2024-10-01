@@ -1,42 +1,49 @@
-version: "3.9"
 services:
-  db:
-    image: postgres:13
-    container_name: db
-    ports:
-      - 2345:5432
-    networks:
-      - compose-bridge
+  database:
+    image: database:1.0.0
+    container_name: postgres-c-mup
     env_file:
       - .env
-    restart: always
-    volumes:
-      - postgres:/var/lib/postgresql/data
-  app:
-    container_name: app
-    build: .
-    networks:
-      - compose-bridge    
+    user: postgres
+    environment:
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_DB: ${POSTGRES_DATABASE}
+    build:
+      context: ./database
+      dockerfile: Dockerfile
     ports:
-      - 5000:4002
-    depends_on:
-      - db
+      - 6779:${POSTGRES_PORT}
     volumes:
-      - .:/app
-  
-  node-app:
-    container_name: node-app
-    build: ../muscle-up-frontend
-    env_file: ../muscle-up-frontend/.env
-    networks:
-      - compose-bridge    
+      - database-v-mup:/var/lib/postgresql/data
+    command: "-p 6779"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -p 6779 -U postgres -d my_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 0s
+
+  server:
+    image: server:1.0.0
+    container_name: server-c-mup
+    build: 
+      context: ./muscle-up-backend
+      dockerfile: Dockerfile  
+    env_file: 
+      - .env
+    environment:
+        DATABASE_URL: ${DATABASE_URL}
     ports:
-      - 5005:4000
+      - 5006:${PORT}
     depends_on:
-      - app
-    
-networks:
-  compose-bridge:
-    driver: bridge
+      database:
+        condition: service_healthy
+    volumes:
+      - ./muscle-up-backend:/muscle-up-backend
+      - muscle-up-backend-node-modules:/muscle-up-backend/node_modules
+
 volumes:
-  postgres:
+  muscle-up-backend-node-modules:
+    name: "muscle-up-backend-node-modules"
+  database-v-mup:
+    name: "database-v-mup"
